@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Focaccia Recipe Calculator</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="page">
+  <header class="header">
+    <h1>🍞 Focaccia Recipe Calculator</h1>
+    <p class="subtitle">Scale a focaccia dough by baker's percentages — from a flour weight or straight from your pan size.</p>
+  </header>
+
+  <main class="layout">
+    <section class="panel">
+      <h2>1. How do you want to size your dough?</h2>
+      <div class="basis-toggle" role="tablist">
+        <button type="button" id="basisFlourBtn" class="toggle-btn active" data-basis="flour">By flour weight</button>
+        <button type="button" id="basisPanBtn" class="toggle-btn" data-basis="pan">By pan size</button>
+      </div>
+
+      <div id="flourBasis" class="basis-section">
+        <label for="flourWeight">Flour weight
+          <span class="hint">(the base for all baker's percentages)</span>
+        </label>
+        <div class="input-row">
+          <input type="number" id="flourWeight" min="0" step="1" value="500">
+          <span class="unit">g</span>
+        </div>
+      </div>
+
+      <div id="panBasis" class="basis-section hidden">
+        <label for="panShape">Pan shape</label>
+        <select id="panShape">
+          <option value="rect">Rectangular</option>
+          <option value="round">Round</option>
+        </select>
+
+        <div id="rectInputs" class="dims-row">
+          <div class="input-row">
+            <input type="number" id="panLength" min="0" step="0.5" value="33">
+            <span class="unit">cm long</span>
+          </div>
+          <div class="input-row">
+            <input type="number" id="panWidth" min="0" step="0.5" value="23">
+            <span class="unit">cm wide</span>
+          </div>
+        </div>
+
+        <div id="roundInputs" class="dims-row hidden">
+          <div class="input-row">
+            <input type="number" id="panDiameter" min="0" step="0.5" value="30">
+            <span class="unit">cm diameter</span>
+          </div>
+        </div>
+
+        <label for="panCount">Number of pans</label>
+        <div class="input-row">
+          <input type="number" id="panCount" min="1" step="1" value="1">
+          <span class="unit">pan(s)</span>
+        </div>
+
+        <label for="doughStyle">Crumb style
+          <span class="hint">(dough load per pan area)</span>
+        </label>
+        <select id="doughStyle">
+          <option value="0.45">Thin &amp; crispy (0.45 g/cm²)</option>
+          <option value="0.55" selected>Classic focaccia (0.55 g/cm²)</option>
+          <option value="0.70">Thick &amp; fluffy (0.70 g/cm²)</option>
+        </select>
+
+        <p class="derived">Total dough needed: <strong id="panDoughWeight">–</strong></p>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>2. Baker's percentages</h2>
+      <p class="hint">All percentages are relative to the flour weight (100%). Adjust to taste, or use the classic defaults.</p>
+
+      <div class="percent-grid">
+        <div class="percent-field">
+          <label for="hydration">Hydration (water)</label>
+          <div class="input-row">
+            <input type="number" id="hydration" min="0" max="150" step="1" value="78">
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <div class="percent-field">
+          <label for="salt">Salt</label>
+          <div class="input-row">
+            <input type="number" id="salt" min="0" max="10" step="0.1" value="2.2">
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <div class="percent-field">
+          <label for="oil">Olive oil (in dough)</label>
+          <div class="input-row">
+            <input type="number" id="oil" min="0" max="20" step="0.5" value="5">
+            <span class="unit">%</span>
+          </div>
+        </div>
+        <div class="percent-field">
+          <label for="yeast">Instant dry yeast</label>
+          <div class="input-row">
+            <input type="number" id="yeast" min="0" max="5" step="0.1" value="1">
+            <span class="unit">%</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="rise-presets">
+        <span class="hint">Quick yeast presets:</span>
+        <button type="button" class="preset-btn" data-yeast="1.2">Same-day (~3–4h)</button>
+        <button type="button" class="preset-btn" data-yeast="0.5">Overnight room temp (~10–12h)</button>
+        <button type="button" class="preset-btn" data-yeast="0.2">Cold retard 24–48h (fridge)</button>
+      </div>
+
+      <button type="button" id="resetDefaults" class="link-btn">Reset percentages to defaults</button>
+    </section>
+
+    <section class="panel results-panel">
+      <h2>3. Your recipe</h2>
+      <table class="results-table">
+        <thead>
+          <tr><th>Ingredient</th><th>Baker's %</th><th>Weight</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Flour</td><td>100%</td><td id="resFlour">–</td></tr>
+          <tr><td>Water</td><td id="pctWater">–</td><td id="resWater">–</td></tr>
+          <tr><td>Salt</td><td id="pctSalt">–</td><td id="resSalt">–</td></tr>
+          <tr><td>Olive oil</td><td id="pctOil">–</td><td id="resOil">–</td></tr>
+          <tr><td>Instant dry yeast</td><td id="pctYeast">–</td><td id="resYeast">–</td></tr>
+        </tbody>
+        <tfoot>
+          <tr><td>Total dough</td><td></td><td id="resTotal">–</td></tr>
+        </tfoot>
+      </table>
+
+      <div id="perPanNote" class="derived hidden">
+        ≈ <strong id="resPerPan">–</strong> per pan (<span id="resPanCount">–</span> pans)
+      </div>
+
+      <div class="finishing">
+        <h3>For finishing</h3>
+        <p>Drizzle 1–2 tbsp olive oil per pan before dimpling, then flaky salt and toppings (rosemary, cherry tomatoes, olives) to taste.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>Tip: focaccia dough is very wet — use a stand mixer or the stretch-and-fold technique, and generously oil your pan and hands instead of adding flour.</p>
+  </footer>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
