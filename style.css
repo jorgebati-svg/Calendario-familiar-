@@ -45,7 +45,8 @@ body {
   margin-top: 24px;
 }
 
-.results-panel {
+.results-panel,
+.bake-panel {
   grid-column: 1 / -1;
 }
 
@@ -108,12 +109,14 @@ select:focus {
 
 .basis-toggle {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 16px;
 }
 
 .toggle-btn {
   flex: 1;
+  min-width: 140px;
   padding: 10px;
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -121,6 +124,7 @@ select:focus {
   color: var(--ink);
   cursor: pointer;
   font-weight: 600;
+  font-size: 0.92rem;
 }
 
 .toggle-btn.active {
@@ -232,6 +236,68 @@ select:focus {
 .finishing p {
   margin: 0;
   color: var(--ink-soft);
+}
+
+.stat-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.stat-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 16px;
+}
+
+.stat-label {
+  color: var(--ink-soft);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.stat-value {
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.pill {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.pill-recommended {
+  background: var(--accent);
+  color: #fff;
+}
+
+.pill-optional {
+  background: var(--table-head);
+  color: var(--accent-dark);
+  border: 1px solid var(--border);
+}
+
+#steelNote {
+  margin: 10px 0 0;
+}
+
+#multiPanNote {
+  margin-top: 10px;
+}
+
+@media (max-width: 560px) {
+  .stat-row {
+    grid-template-columns: 1fr;
+  }
 }
 
 .footer {

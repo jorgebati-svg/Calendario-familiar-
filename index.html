@@ -19,6 +19,7 @@
       <div class="basis-toggle" role="tablist">
         <button type="button" id="basisFlourBtn" class="toggle-btn active" data-basis="flour">By flour weight</button>
         <button type="button" id="basisPanBtn" class="toggle-btn" data-basis="pan">By pan size</button>
+        <button type="button" id="basisPeopleBtn" class="toggle-btn" data-basis="people">By number of people</button>
       </div>
 
       <div id="flourBasis" class="basis-section">
@@ -62,17 +63,34 @@
           <span class="unit">pan(s)</span>
         </div>
 
-        <label for="doughStyle">Crumb style
-          <span class="hint">(dough load per pan area)</span>
-        </label>
-        <select id="doughStyle">
-          <option value="0.45">Thin &amp; crispy (0.45 g/cm²)</option>
-          <option value="0.55" selected>Classic focaccia (0.55 g/cm²)</option>
-          <option value="0.70">Thick &amp; fluffy (0.70 g/cm²)</option>
-        </select>
-
         <p class="derived">Total dough needed: <strong id="panDoughWeight">–</strong></p>
       </div>
+
+      <div id="peopleBasis" class="basis-section hidden">
+        <label for="peopleCount">Number of people</label>
+        <div class="input-row">
+          <input type="number" id="peopleCount" min="1" step="1" value="6">
+          <span class="unit">people</span>
+        </div>
+
+        <label for="servingStyle">Serving style</label>
+        <select id="servingStyle">
+          <option value="90">Snack / appetizer (~90 g dough pp)</option>
+          <option value="150" selected>Side dish (~150 g dough pp)</option>
+          <option value="250">Main meal (~250 g dough pp)</option>
+        </select>
+
+        <p class="derived">Total dough needed: <strong id="peopleDoughWeight">–</strong></p>
+      </div>
+
+      <label for="doughStyle">Style &amp; thickness
+        <span class="hint">(sets dough load per pan, and the oven guide below)</span>
+      </label>
+      <select id="doughStyle">
+        <option value="0.45">Thin &amp; crispy (0.45 g/cm²)</option>
+        <option value="0.55" selected>Classic focaccia (0.55 g/cm²)</option>
+        <option value="0.70">Thick &amp; fluffy (0.70 g/cm²)</option>
+      </select>
     </section>
 
     <section class="panel">
@@ -142,10 +160,32 @@
         ≈ <strong id="resPerPan">–</strong> per pan (<span id="resPanCount">–</span> pans)
       </div>
 
+      <p class="derived">Feeds about <strong id="resFeeds">–</strong> people <span class="hint">(at <span id="resServingLabel">150 g</span> dough per person)</span></p>
+
       <div class="finishing">
         <h3>For finishing</h3>
         <p>Drizzle 1–2 tbsp olive oil per pan before dimpling, then flaky salt and toppings (rosemary, cherry tomatoes, olives) to taste.</p>
       </div>
+    </section>
+
+    <section class="panel bake-panel">
+      <h2>4. Bake it</h2>
+      <div class="stat-row">
+        <div class="stat-tile">
+          <span class="stat-label">Oven temperature</span>
+          <span class="stat-value" id="bakeTemp">–</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-label">Bake time</span>
+          <span class="stat-value" id="bakeTime">–</span>
+        </div>
+        <div class="stat-tile">
+          <span class="stat-label">Pizza steel</span>
+          <span class="stat-value"><span class="pill" id="steelPill">–</span></span>
+        </div>
+      </div>
+      <p class="hint" id="steelNote"></p>
+      <p class="derived hidden" id="multiPanNote">Baking more than one pan at once? Rotate and swap rack positions halfway through, and add about 3–5 minutes.</p>
     </section>
   </main>
 

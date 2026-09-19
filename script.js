@@ -4,8 +4,10 @@
   const els = {
     basisFlourBtn: document.getElementById("basisFlourBtn"),
     basisPanBtn: document.getElementById("basisPanBtn"),
+    basisPeopleBtn: document.getElementById("basisPeopleBtn"),
     flourBasis: document.getElementById("flourBasis"),
     panBasis: document.getElementById("panBasis"),
+    peopleBasis: document.getElementById("peopleBasis"),
 
     flourWeight: document.getElementById("flourWeight"),
 
@@ -18,6 +20,10 @@
     panCount: document.getElementById("panCount"),
     doughStyle: document.getElementById("doughStyle"),
     panDoughWeight: document.getElementById("panDoughWeight"),
+
+    peopleCount: document.getElementById("peopleCount"),
+    servingStyle: document.getElementById("servingStyle"),
+    peopleDoughWeight: document.getElementById("peopleDoughWeight"),
 
     hydration: document.getElementById("hydration"),
     salt: document.getElementById("salt"),
@@ -39,11 +45,45 @@
     perPanNote: document.getElementById("perPanNote"),
     resPerPan: document.getElementById("resPerPan"),
     resPanCount: document.getElementById("resPanCount"),
+
+    resFeeds: document.getElementById("resFeeds"),
+    resServingLabel: document.getElementById("resServingLabel"),
+
+    bakeTemp: document.getElementById("bakeTemp"),
+    bakeTime: document.getElementById("bakeTime"),
+    steelPill: document.getElementById("steelPill"),
+    steelNote: document.getElementById("steelNote"),
+    multiPanNote: document.getElementById("multiPanNote"),
   };
 
   const DEFAULTS = { hydration: 78, salt: 2.2, oil: 5, yeast: 1 };
 
-  let basis = "flour"; // "flour" | "pan"
+  // Oven guidance keyed to the same dough-load value used for pan sizing (g/cm²).
+  const BAKE_INFO = {
+    "0.45": {
+      ovenLabel: "240–250°C (465–480°F)",
+      timeLabel: "15–18 min",
+      steel: "recommended",
+      steelNote:
+        "Recommended — preheat it 45–60 min on the lowest rack, then set the pan directly on it. The stored heat crisps this thin base fast, before the crumb dries out.",
+    },
+    "0.55": {
+      ovenLabel: "220–230°C (425–450°F)",
+      timeLabel: "20–25 min",
+      steel: "recommended",
+      steelNote:
+        "Recommended — preheat on the lowest rack for 30–45 min. It evens out hot spots in most home ovens and firms up the bottom crust.",
+    },
+    "0.70": {
+      ovenLabel: "200–210°C (400–410°F)",
+      timeLabel: "28–35 min",
+      steel: "optional",
+      steelNote:
+        "Optional — the deeper pan already insulates the bottom. A steel mainly helps if your oven runs cool or bakes unevenly; tent with foil if the top browns too fast.",
+    },
+  };
+
+  let basis = "flour"; // "flour" | "pan" | "people"
 
   function fmtGrams(g) {
     if (!isFinite(g) || g < 0) return "–";
@@ -59,8 +99,10 @@
     basis = next;
     els.basisFlourBtn.classList.toggle("active", basis === "flour");
     els.basisPanBtn.classList.toggle("active", basis === "pan");
+    els.basisPeopleBtn.classList.toggle("active", basis === "people");
     els.flourBasis.classList.toggle("hidden", basis !== "flour");
     els.panBasis.classList.toggle("hidden", basis !== "pan");
+    els.peopleBasis.classList.toggle("hidden", basis !== "people");
     calculate();
   }
 
@@ -87,6 +129,12 @@
     return area * loadPerCm2 * count;
   }
 
+  function totalDoughFromPeople() {
+    const people = Math.max(1, Math.round(num(els.peopleCount)));
+    const perPerson = parseFloat(els.servingStyle.value) || 150;
+    return people * perPerson;
+  }
+
   function calculate() {
     const hydration = num(els.hydration);
     const salt = num(els.salt);
@@ -103,6 +151,10 @@
       panCount = Math.max(1, Math.round(num(els.panCount)));
       flourWeight = totalPercent > 0 ? (panDough / totalPercent) * 100 : 0;
       els.panDoughWeight.textContent = fmtGrams(panDough);
+    } else if (basis === "people") {
+      const peopleDough = totalDoughFromPeople();
+      flourWeight = totalPercent > 0 ? (peopleDough / totalPercent) * 100 : 0;
+      els.peopleDoughWeight.textContent = fmtGrams(peopleDough);
     } else {
       flourWeight = num(els.flourWeight);
     }
@@ -131,11 +183,26 @@
     } else {
       els.perPanNote.classList.add("hidden");
     }
+
+    const perPersonGrams = parseFloat(els.servingStyle.value) || 150;
+    const feeds = Math.max(1, Math.round(total / perPersonGrams));
+    els.resFeeds.textContent = String(feeds);
+    els.resServingLabel.textContent = `${perPersonGrams} g`;
+
+    const bake = BAKE_INFO[els.doughStyle.value] || BAKE_INFO["0.55"];
+    els.bakeTemp.textContent = bake.ovenLabel;
+    els.bakeTime.textContent = bake.timeLabel;
+    els.steelPill.textContent = bake.steel === "recommended" ? "Recommended" : "Optional";
+    els.steelPill.className = `pill pill-${bake.steel}`;
+    els.steelNote.textContent = bake.steelNote;
+
+    els.multiPanNote.classList.toggle("hidden", !(basis === "pan" && panCount > 1));
   }
 
   // Basis toggle
   els.basisFlourBtn.addEventListener("click", () => setBasis("flour"));
   els.basisPanBtn.addEventListener("click", () => setBasis("pan"));
+  els.basisPeopleBtn.addEventListener("click", () => setBasis("people"));
 
   // Pan shape toggle
   els.panShape.addEventListener("change", () => {
@@ -168,6 +235,8 @@
     els.panDiameter,
     els.panCount,
     els.doughStyle,
+    els.peopleCount,
+    els.servingStyle,
     els.hydration,
     els.salt,
     els.oil,
