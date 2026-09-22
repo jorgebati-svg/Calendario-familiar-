@@ -60,7 +60,7 @@ var el = {};
   'peopleCountInput', 'servingStyleSelect', 'peopleDoughLabel',
   'doughStyleSelect',
   'btnPresetSameDay', 'btnPresetOvernight', 'btnPresetColdRetard',
-  'checkPresetSameDay', 'checkPresetOvernight', 'checkPresetColdRetard',
+  'checkPresetOvernight', 'checkPresetColdRetard',
   'flourLabel', 'hydrationLabel', 'waterLabel', 'saltLabel', 'saltWLabel',
   'oilLabel', 'oilWLabel', 'yeastLabel', 'yeastWLabel', 'totalLabel',
   'perPanRow', 'perPanLabel', 'panCountLabel',
@@ -157,7 +157,6 @@ function render() {
   setActive(el.btnPresetSameDay, presetSameDaySelected);
   setActive(el.btnPresetOvernight, presetOvernightSelected);
   setActive(el.btnPresetColdRetard, presetColdRetardSelected);
-  setBadge(el.checkPresetSameDay, presetSameDaySelected);
   setBadge(el.checkPresetOvernight, presetOvernightSelected);
   setBadge(el.checkPresetColdRetard, presetColdRetardSelected);
 
