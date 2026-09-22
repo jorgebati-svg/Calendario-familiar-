@@ -51,16 +51,14 @@ var el = {};
   'btnBasisFlour', 'btnBasisPan', 'btnBasisPeople',
   'sectionFlour', 'sectionPan', 'sectionPeople',
   'flourWeightInput',
-  'btnShapeRect', 'btnShapeRound', 'checkShapeRect', 'checkShapeRound',
+  'btnShapeRect', 'btnShapeRound',
   'panRectFields', 'panRoundField',
   'panLengthInput', 'panWidthInput', 'panDiameterInput',
   'panCountInput', 'panDoughLabel',
   'btnPeople4', 'btnPeople6', 'btnPeople8',
-  'checkPeople4', 'checkPeople6', 'checkPeople8',
   'peopleCountInput', 'servingStyleSelect', 'peopleDoughLabel',
   'doughStyleSelect',
   'btnPresetSameDay', 'btnPresetOvernight', 'btnPresetColdRetard',
-  'checkPresetOvernight', 'checkPresetColdRetard',
   'flourLabel', 'hydrationLabel', 'waterLabel', 'saltLabel', 'saltWLabel',
   'oilLabel', 'oilWLabel', 'yeastLabel', 'yeastWLabel', 'totalLabel',
   'perPanRow', 'perPanLabel', 'panCountLabel',
@@ -71,9 +69,6 @@ var el = {};
 
 function setActive(button, isActive) {
   button.classList.toggle('active', isActive);
-}
-function setBadge(badge, isActive) {
-  badge.classList.toggle('show', isActive);
 }
 
 function render() {
@@ -138,8 +133,6 @@ function render() {
   var isRound = s.panShape === 'round';
   setActive(el.btnShapeRect, isRect);
   setActive(el.btnShapeRound, isRound);
-  setBadge(el.checkShapeRect, isRect);
-  setBadge(el.checkShapeRound, isRound);
   el.panRectFields.style.display = isRect ? 'flex' : 'none';
   el.panRoundField.style.display = isRound ? 'flex' : 'none';
   el.panDoughLabel.textContent = fmtGrams(panDough);
@@ -148,17 +141,12 @@ function render() {
   setActive(el.btnPeople4, s.peopleCount === '4');
   setActive(el.btnPeople6, s.peopleCount === '6');
   setActive(el.btnPeople8, s.peopleCount === '8');
-  setBadge(el.checkPeople4, s.peopleCount === '4');
-  setBadge(el.checkPeople6, s.peopleCount === '6');
-  setBadge(el.checkPeople8, s.peopleCount === '8');
   el.peopleDoughLabel.textContent = fmtGrams(peopleDough);
 
   // Yeast presets
   setActive(el.btnPresetSameDay, presetSameDaySelected);
   setActive(el.btnPresetOvernight, presetOvernightSelected);
   setActive(el.btnPresetColdRetard, presetColdRetardSelected);
-  setBadge(el.checkPresetOvernight, presetOvernightSelected);
-  setBadge(el.checkPresetColdRetard, presetColdRetardSelected);
 
   // Recipe table
   el.flourLabel.textContent = fmtGrams(flourWeight);
