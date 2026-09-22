@@ -1,307 +1,302 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Focaccia Recipe Calculator</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jorge's Focaccia Calculator</title>
+<meta name="description" content="Baker's percentages from a flour weight, a pan, or a headcount — with the oven settings to match.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap">
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<!-- Icon sprite: reused everywhere via <svg class="icon"><use href="#i-name"/></svg> -->
-<svg class="icon-defs" aria-hidden="true" focusable="false">
-  <defs>
-    <symbol id="i-wheat" viewBox="0 0 24 24">
-      <line x1="12" y1="3" x2="12" y2="21"/>
-      <path d="M12 6c1.6 0 2.6-1 2.6-1M12 6c-1.6 0-2.6-1-2.6-1"/>
-      <path d="M12 10c1.6 0 2.6-1 2.6-1M12 10c-1.6 0-2.6-1-2.6-1"/>
-      <path d="M12 14c1.6 0 2.6-1 2.6-1M12 14c-1.6 0-2.6-1-2.6-1"/>
-      <path d="M12 21c-3-.3-4-2-4-2M12 21c3-.3 4-2 4-2"/>
-    </symbol>
-    <symbol id="i-pan" viewBox="0 0 24 24">
-      <rect x="4.5" y="8" width="15" height="10" rx="2"/>
-      <path d="M2.5 11.5v3M21.5 11.5v3"/>
-    </symbol>
-    <symbol id="i-people" viewBox="0 0 24 24">
-      <circle cx="9" cy="8" r="2.6"/>
-      <path d="M4 19c0-3.3 2.2-5.5 5-5.5s5 2.2 5 5.5"/>
-      <circle cx="17" cy="9" r="2.1"/>
-      <path d="M14.6 13.8c.7-.3 1.5-.5 2.4-.5 2.4 0 4 1.8 4 4.6"/>
-    </symbol>
-    <symbol id="i-percent" viewBox="0 0 24 24">
-      <circle cx="7.5" cy="7.5" r="2.2"/>
-      <circle cx="16.5" cy="16.5" r="2.2"/>
-      <line x1="18" y1="6" x2="6" y2="18"/>
-    </symbol>
-    <symbol id="i-bowl" viewBox="0 0 24 24">
-      <path d="M4 10.5h16a8 8 0 0 1-16 0z"/>
-      <line x1="4" y1="10.5" x2="20" y2="10.5"/>
-      <line x1="15.5" y1="4" x2="17.5" y2="8.5"/>
-    </symbol>
-    <symbol id="i-flame" viewBox="0 0 24 24">
-      <path d="M12 22c-4 0-7-2.7-7-6.5C5 11.3 8 8.2 9.7 4.2c.2 3 1.9 3.6 1.9 5.9 0 1.4-1 2-1 3.4 0 1.4 1.1 2.5 2.3 2.5 1.7 0 2.7-1.5 2.2-3.3 2 1.6 3 3.8 3 5.8 0 2.6-2 3.5-6.1 3.5z"/>
-    </symbol>
-    <symbol id="i-droplet" viewBox="0 0 24 24">
-      <path d="M12 3s6 7.1 6 11a6 6 0 0 1-12 0c0-3.9 6-11 6-11z"/>
-    </symbol>
-    <symbol id="i-salt" viewBox="0 0 24 24">
-      <rect x="8" y="8" width="8" height="12" rx="2"/>
-      <rect x="9" y="4" width="6" height="4" rx="1"/>
-      <circle cx="10.6" cy="6" r="0.5" fill="currentColor" stroke="none"/>
-      <circle cx="12" cy="6" r="0.5" fill="currentColor" stroke="none"/>
-      <circle cx="13.4" cy="6" r="0.5" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-oil" viewBox="0 0 24 24">
-      <path d="M9 3h6v3l2 2.2V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8.2L9 6V3z"/>
-      <line x1="9" y1="12" x2="15" y2="12"/>
-    </symbol>
-    <symbol id="i-yeast" viewBox="0 0 24 24">
-      <circle cx="8" cy="15.5" r="2.1"/>
-      <circle cx="13.2" cy="9.5" r="2.9"/>
-      <circle cx="17.5" cy="16" r="1.5"/>
-    </symbol>
-    <symbol id="i-thermometer" viewBox="0 0 24 24">
-      <rect x="10" y="3" width="4" height="12.5" rx="2"/>
-      <circle cx="12" cy="18" r="3.2"/>
-      <circle cx="12" cy="18" r="1.2" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-clock" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="8.2"/>
-      <line x1="12" y1="12" x2="12" y2="7.3"/>
-      <line x1="12" y1="12" x2="15.3" y2="13.6"/>
-    </symbol>
-    <symbol id="i-steel" viewBox="0 0 24 24">
-      <rect x="4" y="6.5" width="16" height="3.4" rx="1"/>
-      <rect x="4" y="14" width="16" height="3.4" rx="1"/>
-    </symbol>
-    <symbol id="i-leaf" viewBox="0 0 24 24">
-      <path d="M4.5 19.5c9-.3 15-4.5 15-15-11 0-15 6-15 15z"/>
-      <line x1="4.8" y1="19.2" x2="15" y2="9"/>
-    </symbol>
-    <symbol id="i-info" viewBox="0 0 24 24">
-      <circle cx="12" cy="12" r="9"/>
-      <line x1="12" y1="11" x2="12" y2="16.5"/>
-      <circle cx="12" cy="7.6" r="0.9" fill="currentColor" stroke="none"/>
-    </symbol>
-    <symbol id="i-refresh" viewBox="0 0 24 24">
-      <path d="M4 12a8 8 0 0 1 13.7-5.7M20 12a8 8 0 0 1-13.7 5.7"/>
-      <path d="M17.5 3.8v3.2h-3.2M6.5 20.2V17h3.2"/>
-    </symbol>
-  </defs>
-</svg>
 
-<div class="page">
-  <header class="header">
-    <svg class="icon icon-hero" aria-hidden="true"><use href="#i-wheat"/></svg>
-    <div>
-      <h1>Focaccia Recipe Calculator</h1>
-      <p class="subtitle">Scale a dough by baker's percentages — from a flour weight, a pan's dimensions, or a headcount — then get the oven settings to match.</p>
-    </div>
-  </header>
+<div class="md3-root">
+  <svg width="0" height="0" style="position: absolute;" aria-hidden="true">
+    <defs>
+      <symbol id="i-wheat" viewBox="0 0 24 24"><line x1="12" y1="3" x2="12" y2="21"></line><path d="M12 6c1.6 0 2.6-1 2.6-1M12 6c-1.6 0-2.6-1-2.6-1"></path><path d="M12 10c1.6 0 2.6-1 2.6-1M12 10c-1.6 0-2.6-1-2.6-1"></path><path d="M12 14c1.6 0 2.6-1 2.6-1M12 14c-1.6 0-2.6-1-2.6-1"></path><path d="M12 21c-3-.3-4-2-4-2M12 21c3-.3 4-2 4-2"></path></symbol>
+      <symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="2.6"></circle><path d="M4 19c0-3.3 2.2-5.5 5-5.5s5 2.2 5 5.5"></path><circle cx="17" cy="9" r="2.1"></circle><path d="M14.6 13.8c.7-.3 1.5-.5 2.4-.5 2.4 0 4 1.8 4 4.6"></path></symbol>
+      <symbol id="i-bowl" viewBox="0 0 24 24"><path d="M4 10.5h16a8 8 0 0 1-16 0z"></path><line x1="4" y1="10.5" x2="20" y2="10.5"></line><line x1="15.5" y1="4" x2="17.5" y2="8.5"></line></symbol>
+      <symbol id="i-flame" viewBox="0 0 24 24"><path d="M12 22c-4 0-7-2.7-7-6.5C5 11.3 8 8.2 9.7 4.2c.2 3 1.9 3.6 1.9 5.9 0 1.4-1 2-1 3.4 0 1.4 1.1 2.5 2.3 2.5 1.7 0 2.7-1.5 2.2-3.3 2 1.6 3 3.8 3 5.8 0 2.6-2 3.5-6.1 3.5z"></path></symbol>
+      <symbol id="i-droplet" viewBox="0 0 24 24"><path d="M12 3s6 7.1 6 11a6 6 0 0 1-12 0c0-3.9 6-11 6-11z"></path></symbol>
+      <symbol id="i-salt" viewBox="0 0 24 24"><rect x="8" y="8" width="8" height="12" rx="2"></rect><rect x="9" y="4" width="6" height="4" rx="1"></rect><circle cx="10.6" cy="6" r="0.5" fill="currentColor" stroke="none"></circle><circle cx="12" cy="6" r="0.5" fill="currentColor" stroke="none"></circle><circle cx="13.4" cy="6" r="0.5" fill="currentColor" stroke="none"></circle></symbol>
+      <symbol id="i-oil" viewBox="0 0 24 24"><path d="M9 3h6v3l2 2.2V19a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V8.2L9 6V3z"></path><line x1="9" y1="12" x2="15" y2="12"></line></symbol>
+      <symbol id="i-yeast" viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="2.1"></circle><circle cx="13.2" cy="9.5" r="2.9"></circle><circle cx="17.5" cy="16" r="1.5"></circle></symbol>
+      <symbol id="i-thermometer" viewBox="0 0 24 24"><rect x="10" y="3" width="4" height="12.5" rx="2"></rect><circle cx="12" cy="18" r="3.2"></circle><circle cx="12" cy="18" r="1.2" fill="currentColor" stroke="none"></circle></symbol>
+      <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.2"></circle><line x1="12" y1="12" x2="12" y2="7.3"></line><line x1="12" y1="12" x2="15.3" y2="13.6"></line></symbol>
+      <symbol id="i-steel" viewBox="0 0 24 24"><rect x="4" y="6.5" width="16" height="3.4" rx="1"></rect><rect x="4" y="14" width="16" height="3.4" rx="1"></rect></symbol>
+      <symbol id="i-leaf" viewBox="0 0 24 24"><path d="M4.5 19.5c9-.3 15-4.5 15-15-11 0-15 6-15 15z"></path><line x1="4.8" y1="19.2" x2="15" y2="9"></line></symbol>
+      <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12.5l5 5L20 6.5"></path></symbol>
+      <symbol id="i-shape-rect" viewBox="0 0 48 48">
+        <rect x="6" y="12" width="36" height="24" rx="5"></rect>
+        <rect x="11" y="17" width="26" height="14" rx="3"></rect>
+        <circle cx="17" cy="24" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="24" cy="21" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="31" cy="25" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="20" cy="27.5" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="28" cy="27" r="1.3" fill="currentColor" stroke="none"></circle>
+      </symbol>
+      <symbol id="i-shape-round" viewBox="0 0 48 48">
+        <circle cx="24" cy="24" r="18"></circle>
+        <circle cx="24" cy="24" r="12.5"></circle>
+        <circle cx="19" cy="19" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="29" cy="18" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="30" cy="28" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="18" cy="28.5" r="1.3" fill="currentColor" stroke="none"></circle>
+        <circle cx="24" cy="24" r="1.3" fill="currentColor" stroke="none"></circle>
+      </symbol>
+    </defs>
+  </svg>
 
-  <main class="layout">
-    <section class="panel">
-      <h2><svg class="icon" aria-hidden="true"><use href="#i-wheat"/></svg>Size your dough</h2>
-      <div class="basis-toggle" role="tablist">
-        <button type="button" id="basisFlourBtn" class="toggle-btn active" data-basis="flour">
-          <svg class="icon" aria-hidden="true"><use href="#i-wheat"/></svg>
-          <span>Flour weight</span>
-        </button>
-        <button type="button" id="basisPanBtn" class="toggle-btn" data-basis="pan">
-          <svg class="icon" aria-hidden="true"><use href="#i-pan"/></svg>
-          <span>Pan size</span>
-        </button>
-        <button type="button" id="basisPeopleBtn" class="toggle-btn" data-basis="people">
-          <svg class="icon" aria-hidden="true"><use href="#i-people"/></svg>
-          <span>Headcount</span>
-        </button>
+  <div style="max-width: 720px; margin: 0 auto; padding: 28px 20px 64px;">
+
+    <header style="display: flex; align-items: flex-start; gap: 16px; padding-bottom: 24px;">
+      <div style="width: 73px; height: 73px; flex: none; border-radius: var(--md-sys-shape-corner-large); background: var(--md-sys-color-primary-container); display: flex; align-items: center; justify-content: center">
+        <svg style="width: 39px; height: 39px; flex: none; fill: none; stroke: var(--md-sys-color-on-primary-container); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round" aria-hidden="true"><use href="#i-wheat"></use></svg>
       </div>
+      <div>
+        <h1 style="font-family: 'Roboto', sans-serif; font-weight: 500; font-size: var(--md-sys-typescale-headline-small-size); line-height: var(--md-sys-typescale-headline-small-line-height); letter-spacing: var(--md-sys-typescale-headline-small-tracking); margin: 0 0 4px; color: var(--md-sys-color-on-surface);">Jorge's Focaccia Calculator&nbsp;</h1>
+        <p style="font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size); line-height: var(--md-sys-typescale-body-medium-line-height); letter-spacing: var(--md-sys-typescale-body-medium-tracking); margin: 0; color: var(--md-sys-color-on-surface-variant);">Baker's percentages from a flour weight, a pan, or a headcount with the oven settings to match.</p>
+      </div>
+    </header>
 
-      <div id="flourBasis" class="basis-section">
-        <label for="flourWeight">Flour weight
-          <span class="hint">(the base for all baker's percentages)</span>
-        </label>
-        <div class="input-row">
-          <input type="number" id="flourWeight" min="0" step="1" value="500" inputmode="decimal">
-          <span class="unit">g</span>
+    <main style="display: flex; flex-direction: column; gap: 16px;">
+
+      <section style="background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-medium); padding: 20px;">
+        <h2 style="font-family: 'Roboto', sans-serif; font-weight: var(--md-sys-typescale-title-medium-weight); font-size: var(--md-sys-typescale-title-medium-size); line-height: var(--md-sys-typescale-title-medium-line-height); letter-spacing: var(--md-sys-typescale-title-medium-tracking); display: flex; align-items: center; gap: 10px; margin: 0 0 16px; color: var(--md-sys-color-on-surface);">
+          <svg style="width: 24px; height: 24px; flex: none; fill: none; stroke: var(--md-sys-color-primary); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" aria-hidden="true"><use href="#i-wheat"></use></svg>
+          Size your dough
+        </h2>
+
+        <div role="group" aria-label="Size your dough by" class="seg-group">
+          <button type="button" class="md3-state seg-btn active" id="btnBasisFlour">Flour weight</button>
+          <button type="button" class="md3-state seg-btn" id="btnBasisPan">Pan size</button>
+          <button type="button" class="md3-state seg-btn" id="btnBasisPeople">Headcount</button>
         </div>
-      </div>
 
-      <div id="panBasis" class="basis-section hidden">
-        <label for="panShape">Pan shape</label>
-        <select id="panShape">
-          <option value="rect">Rectangular</option>
-          <option value="round">Round</option>
+        <div id="sectionFlour">
+          <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 0 0 6px; color: var(--md-sys-color-on-surface);">FLOUR WEIGHT <br><span style="font-weight: var(--md-sys-typescale-body-small-weight); color: var(--md-sys-color-on-surface-variant);">The base for every percentage below</span></label>
+          <div class="unit-field">
+            <input type="number" class="unit-input" id="flourWeightInput" min="0" step="1" value="500">
+            <span class="unit-suffix">grams</span>
+          </div>
+        </div>
+
+        <div id="sectionPan" style="display: none;">
+          <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 0 0 6px; color: var(--md-sys-color-on-surface);">PAN SHAPE</label>
+          <div role="group" aria-label="Pan shape" class="card-group">
+            <button type="button" class="md3-state card-btn active" id="btnShapeRect">
+              <span class="check-badge show" id="checkShapeRect"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon" aria-hidden="true"><use href="#i-shape-rect"></use></svg>
+              <span>Rectangular</span>
+            </button>
+            <button type="button" class="md3-state card-btn" id="btnShapeRound">
+              <span class="check-badge" id="checkShapeRound"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon" aria-hidden="true"><use href="#i-shape-round"></use></svg>
+              <span>Round</span>
+            </button>
+          </div>
+
+          <div id="panRectFields" style="display: flex; flex-wrap: wrap; gap: 10px; margin: 14px 0 0;">
+            <div class="unit-field" style="flex: 1; min-width: 120px;">
+              <input type="number" class="unit-input" id="panLengthInput" min="0" step="0.5" value="33">
+              <span class="unit-suffix">cm long</span>
+            </div>
+            <div class="unit-field" style="flex: 1; min-width: 120px;">
+              <input type="number" class="unit-input" id="panWidthInput" min="0" step="0.5" value="23">
+              <span class="unit-suffix">cm wide</span>
+            </div>
+          </div>
+
+          <div id="panRoundField" class="unit-field" style="display: none; margin: 14px 0 0;">
+            <input type="number" class="unit-input" id="panDiameterInput" min="0" step="0.5" value="30">
+            <span class="unit-suffix">cm across</span>
+          </div>
+
+          <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 18px 0 6px; color: var(--md-sys-color-on-surface);">NUMBER OF PANS</label>
+          <div style="display: flex; align-items: center; gap: 10px;">
+            <input type="number" class="plain-field" id="panCountInput" min="1" step="1" value="1">
+          </div>
+
+          <div class="callout">
+            <span>Total dough needed</span>
+            <strong id="panDoughLabel">0 g</strong>
+          </div>
+        </div>
+
+        <div id="sectionPeople" style="display: none;">
+          <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 0 0 6px; color: var(--md-sys-color-on-surface);">NUMBER OF PEOPLE</label>
+          <div role="group" aria-label="Quick headcount presets" class="card-group">
+            <button type="button" class="md3-state card-btn" id="btnPeople4">
+              <span class="check-badge" id="checkPeople4"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon card-icon-small" aria-hidden="true"><use href="#i-people"></use></svg>
+              <span>4 people</span>
+            </button>
+            <button type="button" class="md3-state card-btn active" id="btnPeople6">
+              <span class="check-badge show" id="checkPeople6"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon card-icon-small" aria-hidden="true"><use href="#i-people"></use></svg>
+              <span>6 people</span>
+            </button>
+            <button type="button" class="md3-state card-btn" id="btnPeople8">
+              <span class="check-badge" id="checkPeople8"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon card-icon-small" aria-hidden="true"><use href="#i-people"></use></svg>
+              <span>8 people</span>
+            </button>
+          </div>
+
+          <div class="unit-field" style="margin: 12px 0 0;">
+            <input type="number" class="unit-input" id="peopleCountInput" min="1" step="1" value="6">
+            <span class="unit-suffix">people</span>
+          </div>
+
+          <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 18px 0 6px; color: var(--md-sys-color-on-surface);">SERVING STYLE</label>
+          <select class="plain-field" id="servingStyleSelect">
+            <option value="90">Snack / appetizer (~90 g pp)</option>
+            <option value="150" selected>Side dish (~150 g pp)</option>
+            <option value="250">Main meal (~250 g pp)</option>
+          </select>
+
+          <div class="callout">
+            <span>Total dough needed</span>
+            <strong id="peopleDoughLabel">0 g</strong>
+          </div>
+        </div>
+
+        <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 20px 0 6px; color: var(--md-sys-color-on-surface);">STYLE &amp; THICKNESS<br><span style="font-weight: var(--md-sys-typescale-body-small-weight); color: var(--md-sys-color-on-surface-variant);">sets dough load per pan, and the oven guide below</span></label>
+        <select class="plain-field" id="doughStyleSelect">
+          <option value="0.45">Thin &amp; crispy (0.45 g/cm²)</option>
+          <option value="0.55" selected>Classic focaccia (0.55 g/cm²)</option>
+          <option value="0.70">Thick &amp; fluffy (0.70 g/cm²)</option>
         </select>
+      </section>
 
-        <div id="rectInputs" class="dims-row">
-          <div class="input-row">
-            <input type="number" id="panLength" min="0" step="0.5" value="33" inputmode="decimal">
-            <span class="unit">cm long</span>
-          </div>
-          <div class="input-row">
-            <input type="number" id="panWidth" min="0" step="0.5" value="23" inputmode="decimal">
-            <span class="unit">cm wide</span>
-          </div>
-        </div>
+      <section style="background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-medium); padding: 20px;">
+        <h2 style="font-family: 'Roboto', sans-serif; font-weight: var(--md-sys-typescale-title-medium-weight); font-size: var(--md-sys-typescale-title-medium-size); line-height: var(--md-sys-typescale-title-medium-line-height); letter-spacing: var(--md-sys-typescale-title-medium-tracking); display: flex; align-items: center; gap: 10px; margin: 0 0 14px; color: var(--md-sys-color-on-surface);">
+          <svg style="width: 24px; height: 24px; flex: none; fill: none; stroke: var(--md-sys-color-primary); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" aria-hidden="true"><use href="#i-bowl"></use></svg>
+          Your recipe
+        </h2>
 
-        <div id="roundInputs" class="dims-row hidden">
-          <div class="input-row">
-            <input type="number" id="panDiameter" min="0" step="0.5" value="30" inputmode="decimal">
-            <span class="unit">cm diameter</span>
-          </div>
-        </div>
-
-        <label for="panCount">Number of pans</label>
-        <div class="input-row">
-          <input type="number" id="panCount" min="1" step="1" value="1" inputmode="numeric">
-          <span class="unit">pan(s)</span>
-        </div>
-
-        <p class="derived">Total dough needed: <strong id="panDoughWeight">–</strong></p>
-      </div>
-
-      <div id="peopleBasis" class="basis-section hidden">
-        <label for="peopleCount">Number of people</label>
-        <div class="input-row">
-          <input type="number" id="peopleCount" min="1" step="1" value="6" inputmode="numeric">
-          <span class="unit">people</span>
-        </div>
-
-        <label for="servingStyle">Serving style</label>
-        <select id="servingStyle">
-          <option value="90">Snack / appetizer (~90 g dough pp)</option>
-          <option value="150" selected>Side dish (~150 g dough pp)</option>
-          <option value="250">Main meal (~250 g dough pp)</option>
-        </select>
-
-        <p class="derived">Total dough needed: <strong id="peopleDoughWeight">–</strong></p>
-      </div>
-
-      <label for="doughStyle">Style &amp; thickness
-        <span class="hint">(sets dough load per pan, and the oven guide below)</span>
-      </label>
-      <select id="doughStyle">
-        <option value="0.45">Thin &amp; crispy (0.45 g/cm²)</option>
-        <option value="0.55" selected>Classic focaccia (0.55 g/cm²)</option>
-        <option value="0.70">Thick &amp; fluffy (0.70 g/cm²)</option>
-      </select>
-    </section>
-
-    <section class="panel">
-      <h2><svg class="icon" aria-hidden="true"><use href="#i-percent"/></svg>Baker's percentages</h2>
-      <p class="hint">All percentages are relative to the flour weight (100%). Adjust to taste, or use the classic defaults.</p>
-
-      <div class="percent-grid">
-        <div class="percent-field">
-          <label for="hydration">Hydration (water)</label>
-          <div class="input-row">
-            <input type="number" id="hydration" min="0" max="150" step="1" value="78" inputmode="decimal">
-            <span class="unit">%</span>
+        <div style="margin: 20px 0;">
+          <span style="display: block; color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-small-weight); font-size: var(--md-sys-typescale-body-small-size); margin-bottom: 8px">Quick yeast presets</span>
+          <div role="group" aria-label="Quick yeast presets" class="card-group">
+            <button type="button" class="md3-state card-btn" id="btnPresetSameDay">
+              <span class="check-badge" id="checkPresetSameDay"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon card-icon-small" aria-hidden="true"><use href="#i-clock"></use></svg>
+              <span>Same-day (~3–4h)</span>
+            </button>
+            <button type="button" class="md3-state card-btn" id="btnPresetOvernight">
+              <span class="check-badge" id="checkPresetOvernight"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon card-icon-small" aria-hidden="true"><use href="#i-clock"></use></svg>
+              <span>Overnight room temp (~10–12h)</span>
+            </button>
+            <button type="button" class="md3-state card-btn" id="btnPresetColdRetard">
+              <span class="check-badge" id="checkPresetColdRetard"><svg aria-hidden="true"><use href="#i-check"></use></svg></span>
+              <svg class="card-icon card-icon-small" aria-hidden="true"><use href="#i-clock"></use></svg>
+              <span>Cold retard 24–48h (fridge)</span>
+            </button>
           </div>
         </div>
-        <div class="percent-field">
-          <label for="salt">Salt</label>
-          <div class="input-row">
-            <input type="number" id="salt" min="0" max="10" step="0.1" value="2.2" inputmode="decimal">
-            <span class="unit">%</span>
+
+        <table style="width: 100%; border-collapse: collapse; font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">
+          <thead>
+            <tr>
+              <th style="text-align: left; padding: 0 0 10px; font-weight: var(--md-sys-typescale-label-small-weight); font-size: var(--md-sys-typescale-label-small-size); letter-spacing: var(--md-sys-typescale-label-small-tracking); color: var(--md-sys-color-on-surface-variant);">Ingredient</th>
+              <th style="text-align: left; padding: 0 0 10px; font-weight: var(--md-sys-typescale-label-small-weight); font-size: var(--md-sys-typescale-label-small-size); letter-spacing: var(--md-sys-typescale-label-small-tracking); color: var(--md-sys-color-on-surface-variant);">%</th>
+              <th style="text-align: right; padding: 0 0 10px; font-weight: var(--md-sys-typescale-label-small-weight); font-size: var(--md-sys-typescale-label-small-size); letter-spacing: var(--md-sys-typescale-label-small-tracking); color: var(--md-sys-color-on-surface-variant);">Weight</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center;"><svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-surface-variant); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-right: 10px;" aria-hidden="true"><use href="#i-wheat"></use></svg>Flour</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant);">100%</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); text-align: right; font-variant-numeric: tabular-nums;" id="flourLabel">0 g</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center;"><svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-surface-variant); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-right: 10px;" aria-hidden="true"><use href="#i-droplet"></use></svg>Water</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant);" id="hydrationLabel">78%</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); text-align: right; font-variant-numeric: tabular-nums;" id="waterLabel">0 g</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center;"><svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-surface-variant); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-right: 10px;" aria-hidden="true"><use href="#i-salt"></use></svg>Salt</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant);" id="saltLabel">2.2%</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); text-align: right; font-variant-numeric: tabular-nums;" id="saltWLabel">0 g</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center;"><svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-surface-variant); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-right: 10px;" aria-hidden="true"><use href="#i-oil"></use></svg>Olive oil</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant);" id="oilLabel">5%</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); text-align: right; font-variant-numeric: tabular-nums;" id="oilWLabel">0 g</td>
+            </tr>
+            <tr>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); display: flex; align-items: center;"><svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-surface-variant); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-right: 10px;" aria-hidden="true"><use href="#i-yeast"></use></svg>Instant dry yeast</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant);" id="yeastLabel">1%</td>
+              <td style="padding: 10px 0; border-top: 1px solid var(--md-sys-color-outline-variant); text-align: right; font-variant-numeric: tabular-nums;" id="yeastWLabel">0 g</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td style="padding: 12px 0 0; font-weight: 700; border-top: 1px solid var(--md-sys-color-outline);">Total dough</td>
+              <td style="padding: 12px 0 0; font-weight: 700; border-top: 1px solid var(--md-sys-color-outline);"></td>
+              <td style="padding: 12px 0 0; font-weight: 700; border-top: 1px solid var(--md-sys-color-outline); text-align: right; font-variant-numeric: tabular-nums;" id="totalLabel">0 g</td>
+            </tr>
+          </tfoot>
+        </table>
+
+        <div id="perPanRow" style="display: none; margin: 14px 0 0; color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">≈ <strong style="color: var(--md-sys-color-on-surface);" id="perPanLabel">0 g</strong> per pan (<span id="panCountLabel">1</span> pans)</div>
+
+        <div style="display: flex; align-items: center; gap: 10px; margin-top: 16px; background: var(--md-sys-color-primary-container); border-radius: var(--md-sys-shape-corner-medium); padding: 12px 16px; color: var(--md-sys-color-on-primary-container); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">
+          <svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-primary-container); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" aria-hidden="true"><use href="#i-people"></use></svg>
+          <span>Feeds about <strong style="color: var(--md-sys-color-on-primary-container);" id="feedsLabel">3</strong> people <span style="color: var(--md-sys-color-on-primary-container); opacity: 0.85;">at <span id="perPersonLabel">150 g</span> dough per person</span></span>
+        </div>
+
+        <div style="margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--md-sys-color-outline-variant);">
+          <h3 style="display: flex; align-items: center; gap: 8px; margin: 0 0 6px; font-family: 'Roboto', sans-serif; font-weight: var(--md-sys-typescale-title-medium-weight); font-size: var(--md-sys-typescale-title-medium-size); color: var(--md-sys-color-on-surface);">
+            <svg style="width: 18px; height: 18px; flex: none; fill: none; stroke: var(--md-sys-color-on-surface-variant); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" aria-hidden="true"><use href="#i-leaf"></use></svg>
+            For finishing
+          </h3>
+          <p style="margin: 0; color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">Drizzle 1–2 tbsp olive oil per pan before dimpling, then flaky salt and toppings (rosemary, cherry tomatoes, olives) to taste.</p>
+        </div>
+      </section>
+
+      <section style="background: var(--md-sys-color-surface); border: 1px solid var(--md-sys-color-outline-variant); border-radius: var(--md-sys-shape-corner-medium); padding: 20px;">
+        <h2 style="font-family: 'Roboto', sans-serif; font-weight: var(--md-sys-typescale-title-medium-weight); font-size: var(--md-sys-typescale-title-medium-size); line-height: var(--md-sys-typescale-title-medium-line-height); letter-spacing: var(--md-sys-typescale-title-medium-tracking); display: flex; align-items: center; gap: 10px; margin: 0 0 4px; color: var(--md-sys-color-on-surface);">
+          <svg style="width: 24px; height: 24px; flex: none; fill: none; stroke: var(--md-sys-color-primary); stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round;" aria-hidden="true"><use href="#i-flame"></use></svg>
+          Bake it
+        </h2>
+        <p style="color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-small-weight); font-size: var(--md-sys-typescale-body-small-size); margin: 4px 0 16px;">Set by the style &amp; thickness you chose above.</p>
+
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          <div class="bake-row">
+            <div class="bake-row-left">
+              <svg aria-hidden="true"><use href="#i-thermometer"></use></svg>
+              <span>Oven temperature</span>
+            </div>
+            <span class="bake-row-value" id="bakeTempLabel">220–230°C (425–450°F)</span>
+          </div>
+          <div class="bake-row">
+            <div class="bake-row-left">
+              <svg aria-hidden="true"><use href="#i-clock"></use></svg>
+              <span>Bake time</span>
+            </div>
+            <span class="bake-row-value" id="bakeTimeLabel">20–25 min</span>
+          </div>
+          <div class="bake-row">
+            <div class="bake-row-left">
+              <svg aria-hidden="true"><use href="#i-steel"></use></svg>
+              <span>Pizza steel</span>
+            </div>
+            <span class="steel-pill" id="steelPillLabel">Recommended</span>
           </div>
         </div>
-        <div class="percent-field">
-          <label for="oil">Olive oil (in dough)</label>
-          <div class="input-row">
-            <input type="number" id="oil" min="0" max="20" step="0.5" value="5" inputmode="decimal">
-            <span class="unit">%</span>
-          </div>
-        </div>
-        <div class="percent-field">
-          <label for="yeast">Instant dry yeast</label>
-          <div class="input-row">
-            <input type="number" id="yeast" min="0" max="5" step="0.1" value="1" inputmode="decimal">
-            <span class="unit">%</span>
-          </div>
-        </div>
-      </div>
 
-      <div class="rise-presets">
-        <span class="hint">Quick yeast presets:</span>
-        <button type="button" class="preset-btn" data-yeast="1.2">Same-day (~3–4h)</button>
-        <button type="button" class="preset-btn" data-yeast="0.5">Overnight room temp (~10–12h)</button>
-        <button type="button" class="preset-btn" data-yeast="0.2">Cold retard 24–48h (fridge)</button>
-      </div>
+        <p style="margin: 14px 0 0; color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-small-weight); font-size: var(--md-sys-typescale-body-small-size); line-height: 1.5;" id="steelNoteLabel">Recommended — preheat on the lowest rack for 30–45 min. It evens out hot spots in most home ovens and firms up the bottom crust.</p>
 
-      <button type="button" id="resetDefaults" class="link-btn">
-        <svg class="icon" aria-hidden="true"><use href="#i-refresh"/></svg>
-        Reset percentages to defaults
-      </button>
-    </section>
+        <div id="multiPanNote" style="display: none; margin: 10px 0 0; padding-top: 12px; border-top: 1px solid var(--md-sys-color-outline-variant); color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">Baking more than one pan at once? Rotate and swap rack positions halfway through, and add about 3–5 minutes.</div>
+      </section>
 
-    <section class="panel results-panel">
-      <h2><svg class="icon" aria-hidden="true"><use href="#i-bowl"/></svg>Your recipe</h2>
-      <table class="results-table">
-        <thead>
-          <tr><th>Ingredient</th><th>Baker's %</th><th>Weight</th></tr>
-        </thead>
-        <tbody>
-          <tr><td><svg class="icon" aria-hidden="true"><use href="#i-wheat"/></svg>Flour</td><td>100%</td><td id="resFlour">–</td></tr>
-          <tr><td><svg class="icon" aria-hidden="true"><use href="#i-droplet"/></svg>Water</td><td id="pctWater">–</td><td id="resWater">–</td></tr>
-          <tr><td><svg class="icon" aria-hidden="true"><use href="#i-salt"/></svg>Salt</td><td id="pctSalt">–</td><td id="resSalt">–</td></tr>
-          <tr><td><svg class="icon" aria-hidden="true"><use href="#i-oil"/></svg>Olive oil</td><td id="pctOil">–</td><td id="resOil">–</td></tr>
-          <tr><td><svg class="icon" aria-hidden="true"><use href="#i-yeast"/></svg>Instant dry yeast</td><td id="pctYeast">–</td><td id="resYeast">–</td></tr>
-        </tbody>
-        <tfoot>
-          <tr><td>Total dough</td><td></td><td id="resTotal">–</td></tr>
-        </tfoot>
-      </table>
+    </main>
 
-      <div id="perPanNote" class="derived hidden">
-        ≈ <strong id="resPerPan">–</strong> per pan (<span id="resPanCount">–</span> pans)
-      </div>
+    <footer style="margin-top: 24px; color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-small-weight); font-size: var(--md-sys-typescale-body-small-size); line-height: 1.5;">Tip: focaccia dough is very wet, use a stand mixer or the stretch-and-fold technique, and generously oil your pan and hands instead of adding flour.</footer>
 
-      <p class="derived"><svg class="icon" aria-hidden="true"><use href="#i-people"/></svg>Feeds about <strong id="resFeeds">–</strong> people <span class="hint">(at <span id="resServingLabel">150 g</span> dough per person)</span></p>
-
-      <div class="finishing">
-        <h3><svg class="icon" aria-hidden="true"><use href="#i-leaf"/></svg>For finishing</h3>
-        <p>Drizzle 1–2 tbsp olive oil per pan before dimpling, then flaky salt and toppings (rosemary, cherry tomatoes, olives) to taste.</p>
-      </div>
-    </section>
-
-    <section class="panel bake-panel">
-      <h2><svg class="icon" aria-hidden="true"><use href="#i-flame"/></svg>Bake it</h2>
-      <p class="hint">Set by the style &amp; thickness you chose above.</p>
-      <div class="stat-row">
-        <div class="stat-tile">
-          <svg class="icon icon-stat" aria-hidden="true"><use href="#i-thermometer"/></svg>
-          <div>
-            <span class="stat-label">Oven temperature</span>
-            <span class="stat-value" id="bakeTemp">–</span>
-          </div>
-        </div>
-        <div class="stat-tile">
-          <svg class="icon icon-stat" aria-hidden="true"><use href="#i-clock"/></svg>
-          <div>
-            <span class="stat-label">Bake time</span>
-            <span class="stat-value" id="bakeTime">–</span>
-          </div>
-        </div>
-        <div class="stat-tile">
-          <svg class="icon icon-stat" aria-hidden="true"><use href="#i-steel"/></svg>
-          <div>
-            <span class="stat-label">Pizza steel</span>
-            <span class="stat-value"><span class="pill" id="steelPill">–</span></span>
-          </div>
-        </div>
-      </div>
-      <p class="hint" id="steelNote"></p>
-      <p class="derived hidden" id="multiPanNote">Baking more than one pan at once? Rotate and swap rack positions halfway through, and add about 3–5 minutes.</p>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <p><svg class="icon" aria-hidden="true"><use href="#i-info"/></svg>Tip: focaccia dough is very wet — use a stand mixer or the stretch-and-fold technique, and generously oil your pan and hands instead of adding flour.</p>
-  </footer>
+  </div>
 </div>
 
 <script src="script.js"></script>
