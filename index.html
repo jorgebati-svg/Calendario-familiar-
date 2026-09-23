@@ -112,9 +112,11 @@
           </div>
 
           <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 18px 0 6px; color: var(--md-sys-color-on-surface);">NUMBER OF PANS</label>
-          <div style="display: flex; align-items: center; gap: 10px;">
-            <input type="number" class="plain-field" id="panCountInput" min="1" step="1" value="1">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 8px 0 4px;">
+            <span style="color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">Amount</span>
+            <strong id="panCountValue" style="color: var(--md-sys-color-on-surface); font-weight: 500; font-size: var(--md-sys-typescale-headline-small-size); font-variant-numeric: tabular-nums;">1 pan</strong>
           </div>
+          <input type="range" class="md3-slider" id="panCountInput" min="1" max="6" step="1" value="1">
 
           <div class="callout">
             <span>Total dough needed</span>

@@ -54,7 +54,7 @@ var el = {};
   'btnShapeRect', 'btnShapeRound',
   'panRectFields', 'panRoundField',
   'panLengthInput', 'panWidthInput', 'panDiameterInput',
-  'panCountInput', 'panDoughLabel',
+  'panCountInput', 'panCountValue', 'panDoughLabel',
   'btnPeople4', 'btnPeople6', 'btnPeople8',
   'peopleCountInput', 'peopleCountValue', 'servingStyleSelect', 'peopleDoughLabel',
   'doughStyleSelect',
@@ -143,6 +143,13 @@ function render() {
   el.panRectFields.style.display = isRect ? 'flex' : 'none';
   el.panRoundField.style.display = isRound ? 'flex' : 'none';
   el.panDoughLabel.textContent = fmtGrams(panDough);
+
+  var panCountSliderMin = 1;
+  var panCountSliderMax = 6;
+  var panCountNum = Math.max(panCountSliderMin, Math.min(panCountSliderMax, panCount));
+  var panCountSliderPct = ((panCountNum - panCountSliderMin) / (panCountSliderMax - panCountSliderMin)) * 100;
+  el.panCountInput.style.setProperty('--range-progress', panCountSliderPct + '%');
+  el.panCountValue.textContent = panCountNum + (panCountNum === 1 ? ' pan' : ' pans');
 
   // Headcount presets
   setActive(el.btnPeople4, s.peopleCount === '4');
