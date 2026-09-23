@@ -57,7 +57,6 @@ var el = {};
   'panCountInput', 'panCountValue', 'panDoughLabel',
   'btnPeople4', 'btnPeople6', 'btnPeople8',
   'peopleCountInput', 'peopleCountValue', 'servingStyleSelect', 'peopleDoughLabel',
-  'peoplePanCountInput', 'peoplePanCountValue', 'peoplePanCountSubtitle',
   'doughStyleSelect',
   'btnPresetSameDay', 'btnPresetOvernight', 'btnPresetColdRetard',
   'flourLabel', 'hydrationLabel', 'waterLabel', 'saltLabel', 'saltWLabel',
@@ -97,7 +96,7 @@ function render() {
   } else if (basis === 'people') {
     var people = Math.max(1, Math.round(toNum(s.peopleCount, 1)));
     var perPerson = parseFloat(s.servingStyle) || 150;
-    peopleDough = people * perPerson * panCount;
+    peopleDough = people * perPerson;
     flourWeight = totalPercent > 0 ? (peopleDough / totalPercent) * 100 : 0;
   } else {
     flourWeight = toNum(s.flourWeight, 0);
@@ -119,7 +118,7 @@ function render() {
   var presetOvernightSelected = Math.abs(yeast - 0.5) < 0.001;
   var presetColdRetardSelected = Math.abs(yeast - 0.2) < 0.001;
 
-  var showPerPan = (basis === 'pan' || basis === 'people') && panCount > 1;
+  var showPerPan = basis === 'pan' && panCount > 1;
 
   // Size your dough — basis toggle
   setActive(el.btnBasisFlour, basis === 'flour');
@@ -149,13 +148,8 @@ function render() {
   var panCountSliderMax = 6;
   var panCountNum = Math.max(panCountSliderMin, Math.min(panCountSliderMax, panCount));
   var panCountSliderPct = ((panCountNum - panCountSliderMin) / (panCountSliderMax - panCountSliderMin)) * 100;
-  var panCountText = panCountNum + (panCountNum === 1 ? ' pan' : ' pans');
-  el.panCountInput.value = panCountNum;
   el.panCountInput.style.setProperty('--range-progress', panCountSliderPct + '%');
-  el.panCountValue.textContent = panCountText;
-  el.peoplePanCountInput.value = panCountNum;
-  el.peoplePanCountInput.style.setProperty('--range-progress', panCountSliderPct + '%');
-  el.peoplePanCountValue.textContent = panCountText;
+  el.panCountValue.textContent = panCountNum + (panCountNum === 1 ? ' pan' : ' pans');
 
   // Headcount presets
   setActive(el.btnPeople4, s.peopleCount === '4');
@@ -169,7 +163,6 @@ function render() {
   var peopleSliderPct = ((peopleCountNum - peopleSliderMin) / (peopleSliderMax - peopleSliderMin)) * 100;
   el.peopleCountInput.style.setProperty('--range-progress', peopleSliderPct + '%');
   el.peopleCountValue.textContent = peopleCountNum + ' people';
-  el.peoplePanCountSubtitle.textContent = peopleCountNum;
 
   // Yeast presets
   setActive(el.btnPresetSameDay, presetSameDaySelected);
@@ -217,7 +210,6 @@ el.panWidthInput.addEventListener('input', setField('panWidth'));
 el.panDiameterInput.addEventListener('input', setField('panDiameter'));
 el.panCountInput.addEventListener('input', setField('panCount'));
 el.peopleCountInput.addEventListener('input', setField('peopleCount'));
-el.peoplePanCountInput.addEventListener('input', setField('panCount'));
 el.servingStyleSelect.addEventListener('change', setField('servingStyle'));
 el.doughStyleSelect.addEventListener('change', setField('doughStyle'));
 
