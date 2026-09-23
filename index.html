@@ -75,10 +75,11 @@
 
         <div id="sectionFlour">
           <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 0 0 6px; color: var(--md-sys-color-on-surface);">FLOUR WEIGHT <br><span style="font-weight: var(--md-sys-typescale-body-small-weight); color: var(--md-sys-color-on-surface-variant);">The base for every percentage below</span></label>
-          <div class="unit-field">
-            <input type="number" class="unit-input" id="flourWeightInput" min="0" step="1" value="500">
-            <span class="unit-suffix">grams</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 8px 0 4px;">
+            <span style="color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">Amount</span>
+            <strong id="flourWeightValue" style="color: var(--md-sys-color-on-surface); font-weight: var(--md-sys-typescale-title-medium-weight); font-size: var(--md-sys-typescale-title-medium-size); font-variant-numeric: tabular-nums;">500 g</strong>
           </div>
+          <input type="range" class="md3-slider" id="flourWeightInput" min="100" max="2000" step="25" value="500">
         </div>
 
         <div id="sectionPan" style="display: none;">

@@ -50,7 +50,7 @@ var el = {};
 [
   'btnBasisFlour', 'btnBasisPan', 'btnBasisPeople',
   'sectionFlour', 'sectionPan', 'sectionPeople',
-  'flourWeightInput',
+  'flourWeightInput', 'flourWeightValue',
   'btnShapeRect', 'btnShapeRound',
   'panRectFields', 'panRoundField',
   'panLengthInput', 'panWidthInput', 'panDiameterInput',
@@ -127,6 +127,13 @@ function render() {
   el.sectionFlour.style.display = basis === 'flour' ? '' : 'none';
   el.sectionPan.style.display = basis === 'pan' ? '' : 'none';
   el.sectionPeople.style.display = basis === 'people' ? '' : 'none';
+
+  var flourSliderMin = 100;
+  var flourSliderMax = 2000;
+  var flourWeightNum = Math.max(flourSliderMin, Math.min(flourSliderMax, Math.round(toNum(s.flourWeight, 500))));
+  var flourSliderPct = ((flourWeightNum - flourSliderMin) / (flourSliderMax - flourSliderMin)) * 100;
+  el.flourWeightInput.style.setProperty('--range-progress', flourSliderPct + '%');
+  el.flourWeightValue.textContent = flourWeightNum + ' g';
 
   // Pan shape
   var isRect = s.panShape === 'rect';
