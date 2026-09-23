@@ -56,7 +56,7 @@ var el = {};
   'panLengthInput', 'panWidthInput', 'panDiameterInput',
   'panCountInput', 'panDoughLabel',
   'btnPeople4', 'btnPeople6', 'btnPeople8',
-  'peopleCountInput', 'servingStyleSelect', 'peopleDoughLabel',
+  'peopleCountInput', 'peopleCountValue', 'servingStyleSelect', 'peopleDoughLabel',
   'doughStyleSelect',
   'btnPresetSameDay', 'btnPresetOvernight', 'btnPresetColdRetard',
   'flourLabel', 'hydrationLabel', 'waterLabel', 'saltLabel', 'saltWLabel',
@@ -142,6 +142,13 @@ function render() {
   setActive(el.btnPeople6, s.peopleCount === '6');
   setActive(el.btnPeople8, s.peopleCount === '8');
   el.peopleDoughLabel.textContent = fmtGrams(peopleDough);
+
+  var peopleSliderMin = 1;
+  var peopleSliderMax = 20;
+  var peopleCountNum = Math.max(peopleSliderMin, Math.min(peopleSliderMax, Math.round(toNum(s.peopleCount, 6))));
+  var peopleSliderPct = ((peopleCountNum - peopleSliderMin) / (peopleSliderMax - peopleSliderMin)) * 100;
+  el.peopleCountInput.style.setProperty('--range-progress', peopleSliderPct + '%');
+  el.peopleCountValue.textContent = peopleCountNum + ' people';
 
   // Yeast presets
   setActive(el.btnPresetSameDay, presetSameDaySelected);

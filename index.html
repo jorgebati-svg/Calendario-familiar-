@@ -138,10 +138,11 @@
             </button>
           </div>
 
-          <div class="unit-field" style="margin: 12px 0 0;">
-            <input type="number" class="unit-input" id="peopleCountInput" min="1" step="1" value="6">
-            <span class="unit-suffix">people</span>
+          <div style="display: flex; align-items: center; justify-content: space-between; margin: 16px 0 4px;">
+            <span style="color: var(--md-sys-color-on-surface-variant); font-weight: var(--md-sys-typescale-body-medium-weight); font-size: var(--md-sys-typescale-body-medium-size);">Custom amount</span>
+            <strong id="peopleCountValue" style="color: var(--md-sys-color-on-surface); font-weight: var(--md-sys-typescale-title-medium-weight); font-size: var(--md-sys-typescale-title-medium-size); font-variant-numeric: tabular-nums;">6 people</strong>
           </div>
+          <input type="range" class="md3-slider" id="peopleCountInput" min="1" max="20" step="1" value="6">
 
           <label style="display: block; font-weight: var(--md-sys-typescale-label-large-weight); font-size: var(--md-sys-typescale-label-large-size); line-height: var(--md-sys-typescale-label-large-line-height); letter-spacing: var(--md-sys-typescale-label-large-tracking); margin: 18px 0 6px; color: var(--md-sys-color-on-surface);">SERVING STYLE</label>
           <select class="plain-field" id="servingStyleSelect">
